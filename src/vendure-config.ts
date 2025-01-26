@@ -121,18 +121,20 @@ export const config: VendureConfig = {
                 apiHost: 'backend-production-9170.up.railway.app',
                 apiPort: 8080,
             },
-            app: compileUiExtensions({
-                outputPath: path.join(__dirname, '../admin-ui'),
-                extensions: [
-                    setBranding({
-                        // The small logo appears in the top left of the screen  
-                        smallLogoPath: path.join(__dirname, 'images/my-logo-sm.png'),
-                        // The large logo is used on the login page  
-                        largeLogoPath: path.join(__dirname, 'images/my-logo-lg.png'),
-                        faviconPath: path.join(__dirname, 'images/my-favicon.ico'),
-                    }),
-                ],
-            }),
+            app: IS_DEV 
+                ? compileUiExtensions({
+                    outputPath: path.join(__dirname, '../admin-ui'),
+                    extensions: [
+                        setBranding({
+                            smallLogoPath: path.join(__dirname, 'images/my-logo-sm.png'),
+                            largeLogoPath: path.join(__dirname, 'images/my-logo-lg.png'),
+                            faviconPath: path.join(__dirname, 'images/my-favicon.ico'),
+                        }),
+                    ],
+                })
+                : {
+                    path: path.join(__dirname, '../admin-ui/dist'),
+                },
         }),
     ],
 };
