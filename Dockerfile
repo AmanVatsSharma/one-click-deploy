@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 
 # Install dependencies with exact versions
 COPY package*.json ./
-RUN npm install
+RUN npm install --no-package-lock
 
 # Copy source
 COPY . .
@@ -35,7 +35,7 @@ WORKDIR /usr/src/app
 
 # Copy package files and install production dependencies
 COPY package*.json ./
-RUN npm install --only=production
+RUN npm install --omit=dev --no-package-lock
 
 # Create necessary directories
 RUN mkdir -p dist admin-ui/dist

@@ -26,49 +26,10 @@
     "@vendure/email-plugin": "2.2.0",
     "@vendure/ui-devkit": "3.1.2",
     "dotenv": "16.3.1",
-    "pg": "8.11.5"
+    "pg": "8.11.5",
+    "typescript": "5.3.3"
   },
   "devDependencies": {
-    "typescript": "5.3.3",
-    "concurrently": "8.2.2",
-    "rimraf": "3.0.2",
-    "copyfiles": "2.4.1",
-    "ts-node": "10.9.2",
-    "@types/node": "20.11.0"
-  }
-}
-{
-  "name": "one-click-deploy",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev:server": "ts-node ./src/index.ts",
-    "dev:worker": "ts-node ./src/index-worker.ts",
-    "dev": "concurrently npm:dev:*",
-    "clean": "rimraf dist admin-ui",
-    "copy-assets": "copyfiles -u 1 \"src/**/*.{graphql,json,html}\" dist/",
-    "build:server": "tsc -p tsconfig.json && npm run copy-assets",
-    "build:admin": "ts-node src/compile-admin-ui.ts",
-    "build": "npm run clean && npm run build:admin && npm run build:server",
-    "start:server": "node ./dist/index.js",
-    "start:worker": "node ./dist/index-worker.js",
-    "start": "concurrently npm:start:*"
-  },
-  "dependencies": {
-    "@aws-sdk/client-s3": "3.554.0",
-    "@aws-sdk/lib-storage": "3.554.0",
-    "@vendure/admin-ui-plugin": "2.2.0",
-    "@vendure/asset-server-plugin": "2.2.0",
-    "@vendure/cli": "2.2.0",
-    "@vendure/core": "2.2.0",
-    "@vendure/create": "2.2.0",
-    "@vendure/email-plugin": "2.2.0",
-    "@vendure/ui-devkit": "3.1.2",
-    "dotenv": "16.3.1",
-    "pg": "8.11.5"
-  },
-  "devDependencies": {
-    "typescript": "5.3.3",
     "concurrently": "8.2.2",
     "rimraf": "3.0.2",
     "copyfiles": "2.4.1",
