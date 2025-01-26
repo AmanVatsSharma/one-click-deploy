@@ -6,13 +6,13 @@
     "dev:server": "ts-node ./src/index.ts",
     "dev:worker": "ts-node ./src/index-worker.ts",
     "dev": "concurrently yarn:dev:*",
-    "build:server": "tsc",
+    "clean": "rimraf dist admin-ui",
+    "build:server": "tsc --project tsconfig.json",
     "build:admin": "ts-node src/compile-admin-ui.ts",
-    "build": "npm run build:admin && npm run build:server",
+    "build": "npm run clean && npm run build:admin && npm run build:server",
     "start:server": "node ./dist/index.js",
     "start:worker": "node ./dist/index-worker.js",
-    "start": "concurrently yarn:start:*",
-    "prebuild": "npm run build:admin"
+    "start": "concurrently npm:start:*"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.554.0",
@@ -30,6 +30,8 @@
   },
   "devDependencies": {
     "concurrently": "8.2.2",
-    "ts-node": "10.9.2"
+    "rimraf": "^5.0.5",
+    "ts-node": "10.9.2",
+    "@types/node": "^20.11.0"
   }
 }

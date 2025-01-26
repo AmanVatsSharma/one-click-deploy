@@ -10,12 +10,23 @@ RUN npm ci
 # Copy source
 COPY . .
 
-# Build Admin UI and server
-RUN npm run build
+# Show directory structure before build
+RUN echo "Directory structure before build:" && ls -la
 
-# Verify build output
-RUN ls -la dist/
-RUN ls -la admin-ui/dist/
+# Clean any previous builds
+RUN npm run clean
+
+# Build Admin UI first
+RUN echo "Building Admin UI..." && \
+    npm run build:admin && \
+    echo "Admin UI build complete. Contents:" && \
+    ls -la admin-ui/dist/
+
+# Build server
+RUN echo "Building server..." && \
+    npm run build:server && \
+    echo "Server build complete. Contents:" && \
+    ls -la dist/
 
 # Production stage
 FROM node:20-slim
@@ -31,16 +42,20 @@ RUN npm ci --only=production
 # Create necessary directories
 RUN mkdir -p dist admin-ui/dist
 
-# Copy built assets from builder
-COPY --from=builder /usr/src/app/dist ./dist
-COPY --from=builder /usr/src/app/admin-ui/dist ./admin-ui/dist
+# Copy built assets from builder with verification
+COPY --from=builder /usr/src/app/dist ./dist/
+COPY --from=builder /usr/src/app/admin-ui/dist ./admin-ui/dist/
 
-# Verify copied files
-RUN ls -la dist/
-RUN ls -la admin-ui/dist/
+# Verify final structure
+RUN echo "Final dist contents:" && ls -la dist/ && \
+    echo "Final admin-ui contents:" && ls -la admin-ui/dist/
 
 # Set production environment
 ENV NODE_ENV production
+
+# Add healthcheck
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
 
 EXPOSE 3000
 CMD ["npm", "run", "start:server"]
