@@ -7,7 +7,8 @@
     "dev:worker": "ts-node ./src/index-worker.ts",
     "dev": "concurrently npm:dev:*",
     "clean": "rimraf dist admin-ui",
-    "build:server": "tsc",
+    "copy-assets": "copyfiles -u 1 \"src/**/*.{graphql,json,html}\" dist/",
+    "build:server": "tsc -p tsconfig.json && npm run copy-assets",
     "build:admin": "ts-node src/compile-admin-ui.ts",
     "build": "npm run clean && npm run build:admin && npm run build:server",
     "start:server": "node ./dist/index.js",
@@ -31,6 +32,7 @@
     "typescript": "5.3.3",
     "concurrently": "8.2.2",
     "rimraf": "3.0.2",
+    "copyfiles": "2.4.1",
     "ts-node": "10.9.2",
     "@types/node": "20.11.0"
   }

@@ -22,11 +22,13 @@ RUN echo "Building Admin UI..." && \
     echo "Admin UI build complete. Contents:" && \
     ls -la admin-ui/dist/
 
-# Build server
+# Build server with verbose output
 RUN echo "Building server..." && \
     npm run build:server && \
     echo "Server build complete. Contents:" && \
-    ls -la dist/
+    ls -la dist/ && \
+    echo "Checking for index.js:" && \
+    ls -la dist/src/
 
 # Production stage
 FROM node:20-slim
@@ -38,7 +40,7 @@ COPY package*.json ./
 RUN npm install --only=production
 
 # Create necessary directories
-RUN mkdir -p dist admin-ui/dist
+RUN mkdir -p dist/src admin-ui/dist
 
 # Copy built assets from builder with verification
 COPY --from=builder /usr/src/app/dist/ ./dist/
@@ -46,6 +48,7 @@ COPY --from=builder /usr/src/app/admin-ui/dist/ ./admin-ui/dist/
 
 # Verify final structure
 RUN echo "Final dist contents:" && ls -la dist/ && \
+    echo "Checking for index.js:" && ls -la dist/src/ && \
     echo "Final admin-ui contents:" && ls -la admin-ui/dist/
 
 # Set production environment
@@ -56,4 +59,4 @@ HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:3000/health || exit 1
 
 EXPOSE 3000
-CMD ["npm", "run", "start:server"]
+CMD ["node", "./dist/src/index.js"]
