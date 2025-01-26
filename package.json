@@ -20,6 +20,7 @@
     "@vendure/core": "^2.2.0",
     "@vendure/create": "^2.2.0",
     "@vendure/email-plugin": "^2.2.0",
+    "@vendure/ui-devkit": "^3.1.2",
     "dotenv": "16.3.1",
     "pg": "8.11.5",
     "typescript": "5.3.3"
