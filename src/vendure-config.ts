@@ -7,6 +7,7 @@ import {
 import { defaultEmailHandlers, EmailPlugin } from '@vendure/email-plugin';
 import { AssetServerPlugin, configureS3AssetStorage } from '@vendure/asset-server-plugin';
 import { AdminUiPlugin } from '@vendure/admin-ui-plugin';
+import { compileUiExtensions, setBranding } from '@vendure/ui-devkit/compiler';
 import 'dotenv/config';
 import path from 'path';
 
@@ -38,7 +39,7 @@ export const config: VendureConfig = {
             password: process.env.SUPERADMIN_PASSWORD,
         },
         cookieOptions: {
-          secret: process.env.COOKIE_SECRET,
+            secret: process.env.COOKIE_SECRET,
         },
     },
     dbConnectionOptions: {
@@ -77,7 +78,7 @@ export const config: VendureConfig = {
             // If the MINIO_ENDPOINT environment variable is set, we'll use
             // Minio as the asset storage provider. Otherwise, we'll use the
             // default local provider.
-            storageStrategyFactory: process.env.MINIO_ENDPOINT ?  configureS3AssetStorage({
+            storageStrategyFactory: process.env.MINIO_ENDPOINT ? configureS3AssetStorage({
                 bucket: 'vendure-assets',
                 credentials: {
                     accessKeyId: process.env.MINIO_ACCESS_KEY,
@@ -113,6 +114,23 @@ export const config: VendureConfig = {
         AdminUiPlugin.init({
             route: 'admin',
             port: 3002,
+            adminUiConfig: {
+                brand: 'ProMerchants',
+                hideVendureBranding: true,
+                hideVersion: true,
+            },
+            app: compileUiExtensions({
+                outputPath: path.join(__dirname, '../admin-ui'),
+                extensions: [
+                    setBranding({
+                        // The small logo appears in the top left of the screen  
+                        smallLogoPath: path.join(__dirname, 'images/my-logo-sm.png'),
+                        // The large logo is used on the login page  
+                        largeLogoPath: path.join(__dirname, 'images/my-logo-lg.png'),
+                        faviconPath: path.join(__dirname, 'images/my-favicon.ico'),
+                    }),
+                ],
+            }),
         }),
     ],
 };
