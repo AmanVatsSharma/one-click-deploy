@@ -27,7 +27,7 @@ RUN echo "Building server..." && \
     npm run build:server && \
     echo "Server build complete. Contents:" && \
     ls -la dist/ && \
-    echo "Checking for index.js:" && \
+    echo "Checking compiled files:" && \
     ls -la dist/src/
 
 # Production stage
@@ -47,9 +47,9 @@ COPY --from=builder /usr/src/app/dist/ ./dist/
 COPY --from=builder /usr/src/app/admin-ui/dist/ ./admin-ui/dist/
 
 # Verify final structure
-RUN echo "Final dist contents:" && ls -la dist/ && \
-    echo "Checking for index.js:" && ls -la dist/src/ && \
-    echo "Final admin-ui contents:" && ls -la admin-ui/dist/
+RUN echo "Final structure:" && \
+    echo "dist/src contents:" && ls -la dist/src/ && \
+    echo "admin-ui/dist contents:" && ls -la admin-ui/dist/
 
 # Set production environment
 ENV NODE_ENV production
