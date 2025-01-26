@@ -38,15 +38,22 @@ COPY package*.json ./
 RUN npm install --omit=dev --no-package-lock
 
 # Create necessary directories
-RUN mkdir -p dist admin-ui/dist
+RUN mkdir -p \
+    dist \
+    admin-ui/dist \
+    static/email/templates/partials \
+    static/email/test-emails \
+    static/assets
 
 # Copy built assets from builder with verification
 COPY --from=builder /usr/src/app/dist/ ./dist/
 COPY --from=builder /usr/src/app/admin-ui/dist/ ./admin-ui/dist/
+COPY --from=builder /usr/src/app/static/ ./static/
 
 # Verify final structure
 RUN echo "Final structure:" && \
-    echo "dist contents:" && ls -la dist/
+    echo "dist contents:" && ls -la dist/ && \
+    echo "\nstatic contents:" && ls -la static/
 
 # Set production environment
 ENV NODE_ENV production
