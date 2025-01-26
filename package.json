@@ -5,9 +5,9 @@
   "scripts": {
     "dev:server": "ts-node ./src/index.ts",
     "dev:worker": "ts-node ./src/index-worker.ts",
-    "dev": "concurrently yarn:dev:*",
+    "dev": "concurrently npm:dev:*",
     "clean": "rimraf dist admin-ui",
-    "build:server": "tsc --project tsconfig.json",
+    "build:server": "tsc",
     "build:admin": "ts-node src/compile-admin-ui.ts",
     "build": "npm run clean && npm run build:admin && npm run build:server",
     "start:server": "node ./dist/index.js",
@@ -15,23 +15,23 @@
     "start": "concurrently npm:start:*"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.554.0",
-    "@aws-sdk/lib-storage": "^3.554.0",
-    "@vendure/admin-ui-plugin": "^2.2.0",
-    "@vendure/asset-server-plugin": "^2.2.0",
-    "@vendure/cli": "^2.2.0",
-    "@vendure/core": "^2.2.0",
-    "@vendure/create": "^2.2.0",
-    "@vendure/email-plugin": "^2.2.0",
-    "@vendure/ui-devkit": "^3.1.2",
+    "@aws-sdk/client-s3": "3.554.0",
+    "@aws-sdk/lib-storage": "3.554.0",
+    "@vendure/admin-ui-plugin": "2.2.0",
+    "@vendure/asset-server-plugin": "2.2.0",
+    "@vendure/cli": "2.2.0",
+    "@vendure/core": "2.2.0",
+    "@vendure/create": "2.2.0",
+    "@vendure/email-plugin": "2.2.0",
     "dotenv": "16.3.1",
-    "pg": "8.11.5",
-    "typescript": "5.3.3"
+    "pg": "8.11.5"
   },
   "devDependencies": {
+    "@vendure/ui-devkit": "3.1.2",
+    "typescript": "5.3.3",
     "concurrently": "8.2.2",
-    "rimraf": "^5.0.5",
+    "rimraf": "3.0.2",
     "ts-node": "10.9.2",
-    "@types/node": "^20.11.0"
+    "@types/node": "20.11.0"
   }
 }

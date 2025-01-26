@@ -3,9 +3,9 @@ FROM node:20 AS builder
 
 WORKDIR /usr/src/app
 
-# Install ALL dependencies (including devDependencies)
+# Install dependencies with exact versions
 COPY package*.json ./
-RUN npm ci
+RUN npm install
 
 # Copy source
 COPY . .
@@ -33,18 +33,16 @@ FROM node:20-slim
 
 WORKDIR /usr/src/app
 
-# Copy package files
+# Copy package files and install production dependencies
 COPY package*.json ./
-
-# Install production dependencies only
-RUN npm ci --only=production
+RUN npm install --only=production
 
 # Create necessary directories
 RUN mkdir -p dist admin-ui/dist
 
 # Copy built assets from builder with verification
-COPY --from=builder /usr/src/app/dist ./dist/
-COPY --from=builder /usr/src/app/admin-ui/dist ./admin-ui/dist/
+COPY --from=builder /usr/src/app/dist/ ./dist/
+COPY --from=builder /usr/src/app/admin-ui/dist/ ./admin-ui/dist/
 
 # Verify final structure
 RUN echo "Final dist contents:" && ls -la dist/ && \

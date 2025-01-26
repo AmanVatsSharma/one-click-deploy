@@ -121,8 +121,11 @@ export const config: VendureConfig = {
                 apiHost: 'backend-production-9170.up.railway.app',
                 apiPort: 8080,
             },
-            app: IS_DEV 
-                ? compileUiExtensions({
+            app: process.env.NODE_ENV === 'production' 
+                ? {
+                    path: path.join(__dirname, '../admin-ui/dist'),
+                }
+                : compileUiExtensions({
                     outputPath: path.join(__dirname, '../admin-ui'),
                     extensions: [
                         setBranding({
@@ -131,10 +134,7 @@ export const config: VendureConfig = {
                             faviconPath: path.join(__dirname, 'images/my-favicon.ico'),
                         }),
                     ],
-                })
-                : {
-                    path: path.join(__dirname, '../admin-ui/dist'),
-                },
+                }),
         }),
     ],
 };
