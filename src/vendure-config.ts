@@ -118,6 +118,8 @@ export const config: VendureConfig = {
                 brand: 'ProMerchants',
                 hideVendureBranding: true,
                 hideVersion: true,
+                apiHost: 'backend-production-9170.up.railway.app',
+                apiPort: 8080,
             },
             app: compileUiExtensions({
                 outputPath: path.join(__dirname, '../admin-ui'),
