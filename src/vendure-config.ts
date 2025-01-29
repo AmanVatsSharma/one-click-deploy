@@ -78,14 +78,14 @@ export const config: VendureConfig = {
             // If the MINIO_ENDPOINT environment variable is set, we'll use
             // Minio as the asset storage provider. Otherwise, we'll use the
             // default local provider.
-            storageStrategyFactory: process.env.MINIO_ENDPOINT ? configureS3AssetStorage({
-                bucket: 'vendure-assets',
+            storageStrategyFactory: process.env.MINIO_PUBLIC_ENDPOINT ? configureS3AssetStorage({
+                bucket: 'theaweshop',
                 credentials: {
                     accessKeyId: process.env.MINIO_ACCESS_KEY,
                     secretAccessKey: process.env.MINIO_SECRET_KEY,
                 },
                 nativeS3Configuration: {
-                    endpoint: process.env.MINIO_ENDPOINT,
+                    endpoint: process.env.MINIO_PUBLIC_ENDPOINT,
                     forcePathStyle: true,
                     signatureVersion: 'v4',
                     // The `region` is required by the AWS SDK even when using MinIO,
